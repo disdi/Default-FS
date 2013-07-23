@@ -4,7 +4,7 @@ WORKSHOP_CONTENT := $(filter-out Project $(wildcard *.sh), $(wildcard *))
 PROJECTSHOP_CONTENT := LDDK README VERSIONS Makefile Project
 TEMPLATES_FILE := templates.tgz
 
-KERNEL_SOURCE := /usr/src/linux
+KERNEL_SOURCE := KERNEL_SOURCE := /lib/modules/$(shell uname -r)/build
 
 .PHONY: all ${DIRS} clean
 

@@ -1,7 +1,7 @@
 # If called directly from the command line, invoke the kernel build system.
 ifeq ($(KERNELRELEASE),)
 
-	KERNEL_SOURCE := /usr/src/linux
+	KERNEL_SOURCE := /lib/modules/$(shell uname -r)/build
 	PWD := $(shell pwd)
 default: mkfs.ddkfs
 	$(MAKE) -C $(KERNEL_SOURCE) SUBDIRS=$(PWD) modules
