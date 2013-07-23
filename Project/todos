@@ -1,0 +1,10 @@
++ Future enhancements:
+	> *attr - functions for attributes
+	> Optionally, suggest optimizing the used_blocks by using bits for block.
+		Also, may be make it & others part of the filesystem. But, plan any of
+		these only if mount performance issue, because even otherwise its
+		atleast 'fast-in-creating-files' filesystem
+	> Protect race condition in entry get/put/access in dfs_list, dfs_create,
+		dfs_lookup, dfs_remove, dfs_update using rw lock. How about users of
+		dfs_read_file_entry, dfs_write_file_entry? Check in other file
+		systems

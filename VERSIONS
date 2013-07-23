@@ -1,0 +1,7 @@
+This set of drivers are compatible with:
+* At least the following versions of Linux kernel:-
+	+ 2.6.3x
+	+ 3.0.x, 3.1.x, 3.2.x, 3.3.x, 3.4.x, 3.6.x, 3.7.x
+* The following versions of hardware:-
+	+ DDK v2.1
+	+ DDK fw v2.1
