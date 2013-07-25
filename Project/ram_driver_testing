@@ -1,0 +1,27 @@
+1.Make change in the Makefile to compile the Ram block driver.
+
+2.Insert the driver as a kernel module.
+
+3.Now your RAM works as a block driver which can be viewed by the following command-
+ls -l /dev/rb*
+All the partition are displayed.
+
+4.Now copy the first sector on any patition by the following command-
+dd if=/dev/rb of=dor count=1
+Partition rb's first sector has got copied to dor.
+
+5.Now view the contents of the dor file with the following command-
+xxd dor
+The first sector is the MBR which you copied into dor. The last byte would be 0x55aa which is the signature.
+
+6. Anytime you can display, add or delete the partitions by the following command- 
+fdisk /dev/rb.
+
+7.Quick format any partition with the fs of your choice. eg:minix
+mkfs.minix /dev/rb3
+
+8. Mount the partition with the same filesystem.
+mount -t minix /dev/rb3 /mnt 
+
+9. Check whether the partition is mounted with the following command-
+df

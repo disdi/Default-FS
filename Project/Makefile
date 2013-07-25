@@ -15,7 +15,7 @@ clean:
 else
 
 	obj-m := first_driver.o
-	#obj-m += dor.o
+	obj-m += dor.o
 	#obj-m += ddkb.o
 	#obj-m += ddkfs.o
 	dor-y := ram_block.o ram_device.o partition.o
