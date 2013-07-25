@@ -17,7 +17,7 @@ else
 	obj-m := first_driver.o
 	obj-m += dor.o
 	#obj-m += ddkb.o
-	#obj-m += ddkfs.o
+	obj-m += ddkfs.o
 	dor-y := ram_block.o ram_device.o partition.o
 	ddkb-y := ddk_block.o ddk_storage.o
 	ddkfs-y := ddk_fs.o ddk_fs_ops.o

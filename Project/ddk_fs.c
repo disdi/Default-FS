@@ -404,8 +404,8 @@ static int dfs_fill_super(struct super_block *sb, void *data, int silent)
 		return -EIO;
 	}
 	/* Update the VFS super_block */
-	sb->s_magic = /* TODO: File system type */
-	sb->s_blocksize = /* TODO: File system block size */
+	sb->s_magic = info->sb.type;/* TODO: File system type */
+	sb->s_blocksize = info->sb.block_size;/* TODO: File system block size */
 	sb->s_blocksize_bits = get_bit_pos(sb->s_blocksize);
 	sb->s_type = &dfs; // file_system_type
 	sb->s_op = &dfs_sops; // super block operations
@@ -453,8 +453,8 @@ static int dfs_fill_super(struct super_block *sb, void *data, int silent)
 static struct dentry *dfs_mount(struct file_system_type *fs_type, int flags, const char *devname, void *data)
 {
 	printk(KERN_INFO "ddkfs: dfs_mount: devname = %s\n", devname);
-
-	 /* dfs_fill_super this will be called to fill the super block */
+        
+        /* dfs_fill_super this will be called to fill the super block */
 	return mount_bdev(fs_type, flags, devname, data, &dfs_fill_super);
 }
 
