@@ -117,11 +117,11 @@ int dfs_init(dfs_info_t *info)
 
 	for (i = 0; i < info->sb.entry_count; i++)
 	{
-		if ((retval = read_entry_from_ddk_fs(info, i, &fe)) < 0)
+	/*	if ((retval = read_entry_from_ddk_fs(info, i, &fe)) < 0)
 		{
 			vfree(used_blocks);
 			return retval;
-		}
+		}*/
 
 		/* TODO: Update the free_entry_count appropriately here */
 

@@ -58,13 +58,13 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "Error formatting %s: %s\n", argv[1], strerror(errno));
 		return 2;
 	}
-	if (ioctl(dfs_handle, /* TODO: Replace the 0 with the ioctl command */ BLKGETSIZE64, &size) == -1)
+	if (ioctl(dfs_handle, /* TODO: Replace the 0 with the ioctl command */ BLKGETSIZE, &size) == -1)
 	{
 		fprintf(stderr, "Error getting size of %s: %s\n", argv[1], strerror(errno));
 		return 3;
 	}
 	/* TODO: Fill up the partition size in blocks */
-	sb.partition_size = 48;
+	sb.partition_size = size/DDK_FS_BLOCK_SIZE;
 	/* TODO: Fill up the entry table size in blocks */
 	sb.entry_table_size = sb.partition_size * DFS_ENTRY_RATIO;
 	/* TODO: Fill up the total number of entries */
