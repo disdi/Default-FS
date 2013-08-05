@@ -115,15 +115,16 @@ int dfs_init(dfs_info_t *info)
 		free_block_count++;
 	}
 
+	/* TODO: Uncomment once read_entry_from_ddk_fs is implemented
 	for (i = 0; i < info->sb.entry_count; i++)
 	{
-	/*	if ((retval = read_entry_from_ddk_fs(info, i, &fe)) < 0)
+		if ((retval = read_entry_from_ddk_fs(info, i, &fe)) < 0)
 		{
 			vfree(used_blocks);
 			return retval;
-		}*/
+		}
 
-		/* TODO: Update the free_entry_count appropriately here */
+		// TODO: Update the free_entry_count appropriately here
 
 
 		for (j = 0; j < DDK_FS_DATA_BLOCK_CNT; j++)
@@ -133,6 +134,7 @@ int dfs_init(dfs_info_t *info)
 			free_block_count--;
 		}
 	}
+	*/
 
 	info->used_blocks = used_blocks;
 	info->free_block_count = free_block_count;
