@@ -73,7 +73,7 @@ static struct file_operations dfs_fops =
 };
 static struct file_operations dfs_dops =
 {
-	readdir: dfs_readdir
+	//readdir: dfs_readdir // TODO: Uncomment on completing dfs_readdir's  implementation
 };
 
 static int dfs_get_block(struct inode *inode, sector_t iblock, struct buffer_head *bh_result, int create)
@@ -146,10 +146,11 @@ static int dfs_writepage(struct page *page, struct writeback_control *wbc)
 }
 static struct address_space_operations dfs_aops =
 {
-	.readpage = dfs_readpage,
-	.write_begin = dfs_write_begin,
-	.writepage = dfs_writepage,
-	.write_end = generic_write_end
+	// TODO: Uncomment below once dfs_get_block's implementation is complete
+	//.readpage = dfs_readpage,
+	//.write_begin = dfs_write_begin,
+	//.writepage = dfs_writepage,
+	//.write_end = generic_write_end
 };
 
 /*
@@ -298,8 +299,9 @@ static int dfs_inode_rename(struct inode *old_dir, struct dentry *old_dentry, st
 #endif
 static struct inode_operations dfs_iops =
 {
-	lookup: dfs_inode_lookup,
-	create: dfs_inode_create,
+	// TODO: Uncomment below once the corresponding function's implementation is complete
+	//lookup: dfs_inode_lookup, /* TODO: Try first */
+	//create: dfs_inode_create, /* TODO: Try next */
 	//unlink: dfs_inode_unlink, /* TODO: Now try removing the files */
 	//rename: dfs_inode_rename /* TODO: Now try renaming the files */
 };
@@ -372,9 +374,10 @@ static int dfs_write_inode(struct inode *inode, struct writeback_control *wbc)
 
 static struct super_operations dfs_sops =
 {
+	// TODO: Uncomment write_inode once dfs_write_inode's implementation is complete
 	put_super: dfs_put_super,
 	//statfs: dfs_statfs, /* used by df to show it up */ /* TODO: Now try getting the stats */
-	write_inode: dfs_write_inode
+	//write_inode: dfs_write_inode
 };
 
 /*
@@ -404,8 +407,8 @@ static int dfs_fill_super(struct super_block *sb, void *data, int silent)
 		return -EIO;
 	}
 	/* Update the VFS super_block */
-	sb->s_magic = info->sb.type;/* TODO: File system type */
-	sb->s_blocksize = info->sb.block_size;/* TODO: File system block size */
+	sb->s_magic = info->sb.type;
+	sb->s_blocksize = info->sb.block_size;
 	sb->s_blocksize_bits = get_bit_pos(sb->s_blocksize);
 	sb->s_type = &dfs; // file_system_type
 	sb->s_op = &dfs_sops; // super block operations
@@ -453,8 +456,8 @@ static int dfs_fill_super(struct super_block *sb, void *data, int silent)
 static struct dentry *dfs_mount(struct file_system_type *fs_type, int flags, const char *devname, void *data)
 {
 	printk(KERN_INFO "ddkfs: dfs_mount: devname = %s\n", devname);
-        
-        /* dfs_fill_super this will be called to fill the super block */
+
+	/* dfs_fill_super this will be called to fill the super block */
 	return mount_bdev(fs_type, flags, devname, data, &dfs_fill_super);
 }
 

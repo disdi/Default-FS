@@ -1,10 +1,10 @@
-DIRS := $(filter-out LDDK README SEQUENCE VERSIONS Makefile Makefile.mixed module.mk $(wildcard *.sh), $(wildcard *))
+DIRS := $(filter-out LDDK README.md VERSIONS Makefile $(wildcard *.sh), $(wildcard *))
 DIRS_CLEAN := $(DIRS:=_clean)
 WORKSHOP_CONTENT := $(filter-out Project $(wildcard *.sh), $(wildcard *))
-PROJECTSHOP_CONTENT := LDDK README VERSIONS Makefile Project
+PROJECTSHOP_CONTENT := LDDK README.md VERSIONS Makefile Project
 TEMPLATES_FILE := templates.tgz
 
-KERNEL_SOURCE := KERNEL_SOURCE := /lib/modules/$(shell uname -r)/build
+KERNEL_SOURCE := /lib/modules/$(shell uname -r)/build
 
 .PHONY: all ${DIRS} clean
 
