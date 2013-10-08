@@ -73,7 +73,7 @@ static struct file_operations dfs_fops =
 };
 static struct file_operations dfs_dops =
 {
-	//readdir: dfs_readdir // TODO: Uncomment on completing dfs_readdir's  implementation
+	readdir: dfs_readdir // TODO: Uncomment on completing dfs_readdir's  implementation
 };
 
 static int dfs_get_block(struct inode *inode, sector_t iblock, struct buffer_head *bh_result, int create)
@@ -258,7 +258,7 @@ static int dfs_inode_create(struct inode *parent_inode, struct dentry *dentry, u
 
 	return 0;
 }
-#if 0
+
 static int dfs_inode_unlink(struct inode *parent_inode, struct dentry *dentry)
 {
 	char fn[dentry->d_name.len + 1];
@@ -296,14 +296,14 @@ static int dfs_inode_rename(struct inode *old_dir, struct dentry *old_dentry, st
 	else
 		return 0;
 }
-#endif
+
 static struct inode_operations dfs_iops =
 {
 	// TODO: Uncomment below once the corresponding function's implementation is complete
-	//lookup: dfs_inode_lookup, /* TODO: Try first */
-	//create: dfs_inode_create, /* TODO: Try next */
-	//unlink: dfs_inode_unlink, /* TODO: Now try removing the files */
-	//rename: dfs_inode_rename /* TODO: Now try renaming the files */
+	lookup: dfs_inode_lookup, /* TODO: Try first */
+	create: dfs_inode_create, /* TODO: Try next */
+	unlink: dfs_inode_unlink, /* TODO: Now try removing the files */
+	rename: dfs_inode_rename /* TODO: Now try renaming the files */
 };
 
 /*
@@ -321,7 +321,7 @@ static void dfs_put_super(struct super_block *sb)
 		sb->s_fs_info = NULL;
 	}
 }
-#if 0
+
 static int dfs_statfs(struct dentry *dentry, struct kstatfs *buf)
 {
 	struct super_block *sb = dentry->d_sb;
@@ -345,7 +345,7 @@ static int dfs_statfs(struct dentry *dentry, struct kstatfs *buf)
 	buf->f_namelen = DDK_FS_FILENAME_LEN;
 	return 0;
 }
-#endif
+
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,34))
 static int dfs_write_inode(struct inode *inode, int do_sync)
 #else
@@ -376,8 +376,8 @@ static struct super_operations dfs_sops =
 {
 	// TODO: Uncomment write_inode once dfs_write_inode's implementation is complete
 	put_super: dfs_put_super,
-	//statfs: dfs_statfs, /* used by df to show it up */ /* TODO: Now try getting the stats */
-	//write_inode: dfs_write_inode
+	statfs: dfs_statfs, /* used by df to show it up */ /* TODO: Now try getting the stats */
+	write_inode: dfs_write_inode
 };
 
 /*

@@ -28,6 +28,7 @@ static struct rb_device
 	struct request_queue *rb_queue;
 	/* This is kernel's representation of an individual disk device */
 	struct gendisk *rb_disk;
+	u8 *data;
 } rb_dev;
 
 static int rb_open(struct block_device *bdev, fmode_t mode)
@@ -66,7 +67,7 @@ static int rb_transfer(struct request *req)
 
 	int dir = rq_data_dir(req);
 	sector_t start_sector = blk_rq_pos(req);
-	unsigned int sector_cnt = blk_rq_sectors(req);
+	unsigned int sector_cnt = blk_rq_cur_sectors(req);
 
 	struct bio_vec *bv;
 	struct req_iterator iter;
@@ -138,6 +139,10 @@ static void rb_request(struct request_queue *q)
 			continue;
 		}
 #endif
+		if (req == NULL || (req->cmd_type != REQ_TYPE_FS)) {
+			__blk_end_request_all(req, -EIO);
+			continue;
+		}
 		ret = rb_transfer(req);
 		__blk_end_request_all(req, ret);
 		//__blk_end_request(req, ret, blk_rq_bytes(req));
@@ -170,6 +175,18 @@ static int __init rb_init(void)
 	}
 	rb_dev.size = ret;
 
+	/* Get a request queue (here queue is created) */
+	spin_lock_init(&rb_dev.lock);
+	rb_dev.data = dev_data;
+	rb_dev.rb_queue  = blk_init_queue(rb_request, &rb_dev.lock);
+	if (rb_dev.rb_queue == NULL)
+	{
+		printk(KERN_ERR "rb: blk_init_queue failure\n");
+		unregister_blkdev(rb_major, "rb");
+		ramdevice_cleanup();
+		return -ENOMEM;
+	}
+	blk_queue_logical_block_size(rb_dev.rb_queue, RB_SECTOR_SIZE);
 	/* Get Registered */
 	rb_major = register_blkdev(rb_major, "rb");
 	if (rb_major <= 0)
@@ -178,18 +195,6 @@ static int __init rb_init(void)
 		ramdevice_cleanup();
 		return -EBUSY;
 	}
-
-	/* Get a request queue (here queue is created) */
-	spin_lock_init(&rb_dev.lock);
-	rb_dev.rb_queue = blk_init_queue(rb_request, &rb_dev.lock);
-	if (rb_dev.rb_queue == NULL)
-	{
-		printk(KERN_ERR "rb: blk_init_queue failure\n");
-		unregister_blkdev(rb_major, "rb");
-		ramdevice_cleanup();
-		return -ENOMEM;
-	}
-	
 	/*
 	 * Add the gendisk structure
 	 * By using this memory allocation is involved, 
@@ -222,7 +227,7 @@ static int __init rb_init(void)
 	//rb_dev.rb_disk->flags = GENHD_FL_SUPPRESS_PARTITION_INFO;
 	sprintf(rb_dev.rb_disk->disk_name, "rb");
 	/* Setting the capacity of the device in its gendisk structure */
-	set_capacity(rb_dev.rb_disk, rb_dev.size);
+	set_capacity(rb_dev.rb_disk, RB_DEVICE_SIZE);
 
 	/* Adding the disk to the system */
 	add_disk(rb_dev.rb_disk);
