@@ -6,12 +6,6 @@
 #include "ram_device.h"
 #include "partition.h"
 
-#define RB_DEVICE_SIZE 1024 /* sectors */
-/* So, total device size = 1024 * 512 bytes = 512 KiB */
-
-/* Array where the disk stores its data */
-static u8 *dev_data;
-
 int ramdevice_init(void)
 {
 	dev_data = vmalloc(RB_DEVICE_SIZE * RB_SECTOR_SIZE);
@@ -19,7 +13,7 @@ int ramdevice_init(void)
 		return -ENOMEM;
 	/* Setup its partition table */
 	copy_mbr_n_br(dev_data);
-	return RB_DEVICE_SIZE;
+	return (RB_DEVICE_SIZE * RB_SECTOR_SIZE);
 }
 
 void ramdevice_cleanup(void)
